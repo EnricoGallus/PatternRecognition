@@ -24,19 +24,17 @@ public class BruteCollinearPoints {
             LineSegment[] part = new LineSegment[3];
             found = false;
 
-            for (int j=i+1; j < n-2; j++) {
+            for (int j = i+1; j < n-2; j++) {
                 if (found) break;
                 part[0] = new LineSegment(points[i], points[j]);
 
-                for (int k=j+1; k < n-1; k++) {
-                    if (found) break;
-                    if (points[j].slopeOrder().compare(points[i], points[k]) != 0) {
+                for (int k = j+1; k < n-1; k++) {
+                    if (found || points[j].slopeOrder().compare(points[i], points[k]) != 0) {
                         break;
                     }
 
                     part[1] = new LineSegment(points[j], points[k]);
-
-                    for (int l=k+1; l < n; l++) {
+                    for (int l = k+1; l < n; l++) {
                         if (points[k].slopeOrder().compare(points[j], points[l]) == 0) {
                             part[2] = new LineSegment(points[k], points[l]);
                             result = concat(result, part);
@@ -62,10 +60,10 @@ public class BruteCollinearPoints {
      * @return
      */
     public LineSegment[] segments() {
-        return result;
+        return result.clone();
     }
 
-    public static <T> T[] concat(T[] first, T[] second) {
+    private static <T> T[] concat(T[] first, T[] second) {
         T[] result = Arrays.copyOf(first, first.length + second.length);
         System.arraycopy(second, 0, result, first.length, second.length);
         return result;

@@ -62,7 +62,8 @@ public class Point implements Comparable<Point> {
 
         if (x == that.x && y == that.y) return Double.NEGATIVE_INFINITY;
         if (x == that.x) return Double.POSITIVE_INFINITY;
-        return (that.y - y) / (that.x - x);
+        if (y == that.y) return 0;
+        return (that.y - y) / (double) (that.x - x);
 
     }
 
@@ -97,41 +98,12 @@ public class Point implements Comparable<Point> {
             @Override
             public int compare(Point a, Point c) {
                 Point b = new Point(x, y);
-                int compareAandB = a.compareTo(b);
-                int compareBandC = b.compareTo(c);
-                int compareAandC = a.compareTo(c);
-                if (compareAandB == 0 || compareBandC == 0 || compareAandC == 0) {
-                    throw new NullPointerException();
-                }
-
-                if (compareAandB < 0) {
-                    if (compareBandC < 0) {
-                        return compareSlope(a, b, c);
-                    }
-                    else {
-                        return compareAandC < 0 ? compareSlope(a, c, b) : compareSlope(c, a, b);
-                    }
-                }
-                else {
-                    if (compareAandC < 0) {
-                        return compareSlope(b, a, c);
-                    }
-                    else {
-                        return compareBandC < 0 ? compareSlope(b, c, a) : compareSlope(c, b, a);
-                    }
-                }
+                double slope1 = a.slopeTo(b);
+                double slope2 = b.slopeTo(c);
+                return Double.compare(slope1, slope2);
             }
         };
     }
-
-    private int compareSlope(Point a, Point b, Point c) {
-        double slope1 = a.slopeTo(b);
-        double slope2 = b.slopeTo(c);
-        if (slope1 == slope2) return 0;
-        if (slope1 < slope2) return -1;
-        else return 1;
-    }
-
 
     /**
      * Returns a string representation of this point.
