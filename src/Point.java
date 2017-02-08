@@ -62,7 +62,7 @@ public class Point implements Comparable<Point> {
 
         if (x == that.x && y == that.y) return Double.NEGATIVE_INFINITY;
         if (x == that.x) return Double.POSITIVE_INFINITY;
-        if (y == that.y) return 0;
+        if (y == that.y) return 0.0;
         return (that.y - y) / (double) (that.x - x);
 
     }
@@ -97,9 +97,9 @@ public class Point implements Comparable<Point> {
         return new Comparator<Point>() {
             @Override
             public int compare(Point a, Point c) {
-                Point b = new Point(x, y);
+                Point b = Point.this;
                 double slope1 = a.slopeTo(b);
-                double slope2 = b.slopeTo(c);
+                double slope2 = c.slopeTo(b);
                 return Double.compare(slope1, slope2);
             }
         };
